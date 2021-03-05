@@ -11,6 +11,8 @@ def get_even(list_data: list) -> list:
 
 def main():
     data_df = pd.read_excel("data.xlsx")
+    wos_data_df = pd.read_excel("WoS2020.xlsx")
+
     date_list = data_df["Дата создания"]
     name_list = data_df["Наименование"]
     name_book_list = data_df["Название журнала"]
@@ -26,5 +28,9 @@ def main():
     result_df = pd.DataFrame(
         {"Дата": date_list, "Название": name_list, "Название журнала": name_book_list, "Подготовил": prepared_list,
          "Подписан": signed_list})
+    result_df = pd.merge(left=result_df, right=wos_data_df, left_on="Название", right_on="Article Title", how="left")
+
     result_df.to_excel("result.xlsx", index=False)
+
+
 
